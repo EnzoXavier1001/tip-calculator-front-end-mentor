@@ -5,6 +5,11 @@ const tipAmount = document.querySelector(".tip-amount")
 const customTipAmount = document.querySelector(".custom")
 const btnTips = document.querySelectorAll(".btn-tips")
 const bill = document.querySelector("#bill")
+const errorMessage = document.querySelector(".error-message")
+
+bill.addEventListener("change", function() {
+  errorMessage.style.display = "block"
+})
 
 btnTips.forEach(function(tip) {
   tip.addEventListener("click", function() {
@@ -26,15 +31,18 @@ function clearTipButtons() {
 numberPeople.addEventListener("change", function() {
   const billValue = Number(bill.value)
   const numberPeopleValue = numberPeople.value
-  btnTips.forEach(function(tip) {
-    if(tip.classList.contains("active")) {
-      const tipPerc = tip.getAttribute("data-tip")
-      calculateTotalAmount(tipPerc, billValue, numberPeopleValue)
-    } else if (tip.classList.contains("click")) {
-      const tipPerc = tip.value
-      calculateTotalAmount(tipPerc, billValue, numberPeopleValue)
-    }
-  })
+  if(numberPeopleValue > 0) {
+    errorMessage.style.display = "none"
+    btnTips.forEach(function(tip) {
+      if(tip.classList.contains("active")) {
+        const tipPerc = tip.getAttribute("data-tip")
+        calculateTotalAmount(tipPerc, billValue, numberPeopleValue)
+      } else if (tip.classList.contains("click")) {
+        const tipPerc = tip.value
+        calculateTotalAmount(tipPerc, billValue, numberPeopleValue)
+      }
+    })
+  } 
 })
 
 function calculateTotalAmount(tipPerc, billValue, numberPeopleValue) {
